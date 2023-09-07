@@ -7,7 +7,7 @@ import NotFound from "../../components/NotFound";
 
 function Dashboard() {
   useEffect(() => {
-    document.title = "Dashboard";
+    document.title = "SVPS Dashboard";
   }, []);
   return (
     <div className="flex text-gray-800">
