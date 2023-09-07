@@ -124,7 +124,9 @@ function SingleAttachmentFile({ fileName, setNoticeAttachment }) {
     <div className="mt-2 flex items-center justify-between rounded bg-gray-50 p-3">
       <div className="icon-filename flex items-center gap-3">
         <PaperClipIcon className="h-5 w-5 text-gray-700" />
-        <span>{fileName}</span>
+        <span>
+          {fileName.length > 22 ? fileName.slice(0, 22) + "..." : fileName}
+        </span>
       </div>
       <TrashIcon
         onClick={() => setNoticeAttachment(null)}
