@@ -63,10 +63,12 @@ function Sidebar() {
   return (
     <div className="sticky top-0 flex h-screen w-full flex-col justify-between border-r border-gray-200 bg-white px-1 py-6 sm:py-6 xl:px-2">
       <div className="logo flex items-center gap-2 px-3 text-center xl:px-6 xl:text-left">
-        <img src={logo} alt="SVPS logo" className="sm:hidden" />
-        <span className="hidden text-xl font-medium text-gray-900 sm:block xl:text-lg ">
-          <Link to={`/dashboard`}>Admin</Link>
-        </span>
+        <Link to={`/dashboard`}>
+          <img src={logo} alt="SVPS logo" className="xl:h-14 xl:w-14" />
+        </Link>
+        {/* <span className="hidden text-xl font-medium text-gray-900 xl:block xl:text-lg ">
+          <Link to={`/dashboard`}><Link to={`/dashboard`}>Admin</Link>
+        </span> */}
       </div>
 
       <div className="menu mt-8 h-full">
