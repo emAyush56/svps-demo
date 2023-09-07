@@ -17,6 +17,13 @@ function Notice() {
     setNoticeAttachment(file);
   };
 
+  const handleCancel = () => {
+    setNoticeTitle("");
+    setNoticeBody("");
+    setNoticeAttachment(null);
+    pannelToggler();
+  };
+
   return (
     <div className="notice">
       <div className="notice__header flex justify-between">
@@ -30,14 +37,14 @@ function Notice() {
       </div>
       <RightPannel isPannelOpen={isPannelOpen} pannelToggler={pannelToggler}>
         <div className="new-notice flex h-full flex-col">
-          <div
-            onClick={pannelToggler}
-            className="new-notice__header flex justify-between"
-          >
+          <div className="new-notice__header flex justify-between">
             <span className="text-lg font-medium sm:text-xl">
               Create New Notice
             </span>
-            <XMarkIcon className="h-5 w-5 cursor-pointer stroke-current stroke-1 text-gray-400 transition-all hover:stroke-2 hover:text-gray-600" />
+            <XMarkIcon
+              onClick={pannelToggler}
+              className="h-5 w-5 cursor-pointer stroke-current stroke-1 text-gray-400 transition-all hover:stroke-2 hover:text-gray-600"
+            />
           </div>
 
           <form className="new-notice__form mt-6 flex flex-1 flex-col justify-between space-y-3">
@@ -106,7 +113,7 @@ function Notice() {
               </button>
 
               <button
-                onClick={pannelToggler}
+                onClick={handleCancel}
                 className="w-full rounded border border-gray-300 bg-white px-4 py-1 text-gray-600 transition-all hover:bg-gray-100 sm:px-8 sm:text-base sm:font-medium"
               >
                 Cancel
@@ -125,7 +132,7 @@ function SingleAttachmentFile({ fileName, setNoticeAttachment }) {
       <div className="icon-filename flex items-center gap-3">
         <PaperClipIcon className="h-5 w-5 text-gray-700" />
         <span>
-          {fileName.length > 22 ? fileName.slice(0, 22) + "..." : fileName}
+          {fileName.length > 21 ? fileName.slice(0, 21) + "..." : fileName}
         </span>
       </div>
       <TrashIcon
