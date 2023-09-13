@@ -1,14 +1,22 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
-import { Link } from "react-router-dom";
+import { Fragment, useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import logoBlue from "../_assets/img/logo-blue.png";
 import {
   XCircleIcon,
   Bars2Icon,
   PhoneArrowUpRightIcon,
+  ArrowDownTrayIcon,
 } from "@heroicons/react/24/outline";
+import axios from "../_api/axios";
+import LoadingSpinner from "./LoadingSpinner";
 
+const URL_GET_LATEST_NOTICE = "/notice/find";
 const navLinks = [
+  {
+    name: "Notices",
+    href: "/notices",
+  },
   {
     name: "About",
     href: "/about",
@@ -17,68 +25,102 @@ const navLinks = [
     name: "Contact",
     href: "/contact",
   },
-  {
-    name: "Courses",
-    href: "/courses",
-  },
-  {
-    name: "Campus",
-    href: "/campus",
-  },
 ];
 
-export default function Navbar() {
+function Navbar() {
+  const location = useLocation();
+  const currentRoute = location.pathname;
+
   const [isOpen, setIsOpen] = useState(false);
   const [isMenuActive, setIsMenuActive] = useState(false);
+  const [latestNotice, setLatestNotice] = useState([]);
+  const [noticeLoader, setNoticeLoader] = useState(false);
 
-  function closeModal() {
+  const getLatestNotice = async () => {
+    setNoticeLoader(true);
+    try {
+      const res = await axios.get(URL_GET_LATEST_NOTICE, {
+        params: {
+          latest: true,
+        },
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      setLatestNotice(res.data);
+      setNoticeLoader(false);
+    } catch (error) {
+      setNoticeLoader(false);
+      console.log(error);
+    }
+  };
+
+  const closeModal = () => {
     setIsOpen(false);
-  }
+  };
 
-  function openModal() {
+  const openModal = () => {
     setIsOpen(true);
-  }
+  };
 
-  function closeMenu() {
+  const closeMenu = () => {
     setIsMenuActive(false);
-  }
+  };
 
-  function openMenu() {
+  const openMenu = () => {
     setIsMenuActive(true);
-  }
+  };
+
+  useEffect(() => {
+    getLatestNotice();
+  }, []);
 
   return (
     <header className="relative">
-      <div className="p mx-auto flex max-w-[90rem] items-center justify-between p-4 lg:px-6 lg:py-8">
-        <div className="leftHeader flex items-center gap-10">
+      <div className="p mx-auto flex max-w-[85rem] items-center justify-between p-4 lg:px-6 lg:py-4">
+        <div className="leftHeader flex items-center gap-14">
           <Link to="/" className="logo flex items-center gap-3 lg:gap-4">
             <img
               src={logoBlue}
               alt="Skyview Public School Logo"
-              className="h-14 lg:h-[4.6rem]"
+              className="h-14 lg:h-[3.5rem]"
             />
             <div className="logo__text flex flex-col items-start font-medium tracking-wide text-gray-primary lg:items-center">
-              <h5 className="text-2xl lg:text-4xl">SKYVIEW</h5>
-              <h5 className="mt-[-5px] text-lg lg:mt-[4px] lg:text-xl">
+              <h5 className="text-2xl lg:text-3xl">SKYVIEW</h5>
+              <h5 className="mt-[-5px] text-lg lg:pt-[1px] lg:text-[17px]">
                 PUBLIC SCHOOL
               </h5>
             </div>
           </Link>
-          <div className="topNotice relative flex items-center">
-            <div
-              className="topNotice__icon mt-2 cursor-pointer lg:absolute lg:top-2 lg:mt-0"
-              onClick={openModal}
-            >
-              <span className="absolute top-0 right-0 h-3 w-3 animate-ping rounded-full bg-blue-primary"></span>
-              <span className="absolute top-0 right-0 h-3 w-3 rounded-full bg-blue-primary"></span>
+
+          {currentRoute !== "/notices" && (
+            <div className="top-notice-wrapper text-center lg:w-96">
+              {noticeLoader ? (
+                <LoadingSpinner
+                  colorLight="text-blue-600/20"
+                  colorDark="text-blue-primary"
+                  h="h-5"
+                  w="w-5"
+                />
+              ) : (
+                <div className="top-notice relative flex items-center">
+                  <div
+                    onClick={openModal}
+                    className="top-notice__icon mt-2 cursor-pointer lg:absolute lg:top-2 lg:mt-0"
+                  >
+                    <span className="absolute top-0 right-0 h-3 w-3 animate-ping rounded-full bg-blue-primary"></span>
+                    <span className="absolute top-0 right-0 h-3 w-3 rounded-full bg-blue-primary"></span>
+                  </div>
+                  <div
+                    onClick={openModal}
+                    className="top-notice__title ml-4 hidden cursor-pointer text-lg lg:block"
+                  >
+                    {latestNotice[0]?.title.slice(0, 34) + `...`}
+                  </div>
+                </div>
+              )}
             </div>
-            <div
-              onClick={openModal}
-              className="topNotice__title ml-4 hidden cursor-pointer text-lg lg:block"
-            >
-              Admissions Open For Session 2023
-            </div>
-          </div>
+          )}
 
           {/* MODAL */}
 
@@ -112,28 +154,22 @@ export default function Navbar() {
                         as="h4"
                         className="text-xl font-medium leading-6 text-gray-900"
                       >
-                        Admissions Open For Session 2023
+                        {latestNotice[0]?.title}
                       </Dialog.Title>
                       <div className="mt-6">
                         <p className="text-base text-gray-500">
-                          Admissions are open for session 2023-24. Course
-                          admissions are available from class Nursery to class
-                          V.{" "}
-                          <span className="font-semibold underline decoration-2 underline-offset-4">
-                            FREE demo classes
-                          </span>{" "}
-                          are available before admission. Please visit the
-                          school office or call to know more.
+                          {latestNotice[0]?.description}
                         </p>
                       </div>
 
                       <div className="mt-6">
                         <a
-                          href="tel:8653554323"
-                          className="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-base font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                          href={latestNotice[0]?.attachments[0]?.attachmentUrl}
+                          target="_blank"
+                          className="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-base font-medium text-blue-900 hover:bg-blue-200 focus:outline-none"
                         >
-                          <PhoneArrowUpRightIcon className="mr-3 h-5 w-5" />
-                          +91-86535-54323
+                          <ArrowDownTrayIcon className="mr-3 h-5 w-5" />
+                          Download notice
                         </a>
                       </div>
 
@@ -189,3 +225,5 @@ export default function Navbar() {
     </header>
   );
 }
+
+export default Navbar;

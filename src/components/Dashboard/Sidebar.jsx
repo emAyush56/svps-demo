@@ -3,10 +3,9 @@ import {
   UserCircleIcon,
   ArrowLeftOnRectangleIcon,
   BellAlertIcon,
-  UserIcon,
 } from "@heroicons/react/24/outline";
 
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import logo from "../../_assets/img/logo-blue.png";
 
@@ -18,14 +17,14 @@ const sidebarLinks = [
   },
   {
     name: "Public Notices",
-    href: "/dashboard/new-notice",
+    href: "/dashboard/public-notices",
     icon: BellAlertIcon,
   },
-  {
-    name: "Principal",
-    href: "/dashboard/principal",
-    icon: UserIcon,
-  },
+  // {
+  //   name: "Principal",
+  //   href: "/dashboard/principal",
+  //   icon: UserIcon,
+  // },
 ];
 
 function CustomNavLink({ item }) {
@@ -60,6 +59,10 @@ function CustomNavLink({ item }) {
 }
 
 function Sidebar() {
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    window.location.href = "/login";
+  };
   return (
     <div className="sticky top-0 flex h-screen w-full flex-col justify-between border-r border-gray-200 bg-white px-1 py-6 sm:py-6 xl:px-2">
       <div className="logo flex items-center gap-2 px-3 text-center xl:px-6 xl:text-left">
@@ -84,7 +87,10 @@ function Sidebar() {
         <div className="ie-userDetails">
           <div className="flex justify-between gap-2">
             <span className="text-base font-semibold text-gray-700">Admin</span>
-            <div className="group flex cursor-pointer items-center gap-1 rounded-full bg-gray-100 px-2 py-1 transition-all hover:bg-gray-50">
+            <div
+              onClick={handleLogout}
+              className="group flex cursor-pointer items-center gap-1 rounded-full bg-gray-100 px-2 py-1 transition-all hover:bg-gray-50"
+            >
               <ArrowLeftOnRectangleIcon className="h-4 stroke-gray-700 stroke-[1.5] group-hover:stroke-red-700" />
               <span className="text-xs font-medium text-gray-700 group-hover:text-red-700">
                 Logout

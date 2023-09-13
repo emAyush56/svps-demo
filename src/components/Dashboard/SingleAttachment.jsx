@@ -1,11 +1,14 @@
 import { PaperClipIcon, TrashIcon } from "@heroicons/react/24/solid";
 
-function SingleAttachment({ fileName, setNewNotice }) {
+function SingleAttachment({
+  attachmentId,
+  fileName = "file.pdf",
+  handleAttachmentDelete,
+}) {
   const handleAttachmentChange = () => {
-    setNewNotice((prev) => {
-      return { ...prev, noticeAttachment: null };
-    });
+    handleAttachmentDelete(attachmentId);
   };
+
   return (
     <div className="mt-2 flex items-center justify-between rounded bg-gray-50 p-3">
       <div className="icon-filename flex items-center gap-3">
