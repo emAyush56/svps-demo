@@ -35,6 +35,7 @@ function Navbar() {
   const [isMenuActive, setIsMenuActive] = useState(false);
   const [latestNotice, setLatestNotice] = useState([]);
   const [noticeLoader, setNoticeLoader] = useState(false);
+  const [noticeError, setNoticeError] = useState(false);
 
   const getLatestNotice = async () => {
     setNoticeLoader(true);
@@ -51,7 +52,15 @@ function Navbar() {
       setNoticeLoader(false);
     } catch (error) {
       setNoticeLoader(false);
+      setNoticeError(true);
       console.log(error);
+    }
+  };
+
+  const scrollToContact = () => {
+    const contactSection = document.getElementById("contact");
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -103,21 +112,23 @@ function Navbar() {
                   w="w-5"
                 />
               ) : (
-                <div className="top-notice relative flex items-center">
-                  <div
-                    onClick={openModal}
-                    className="top-notice__icon mt-2 cursor-pointer lg:absolute lg:top-2 lg:mt-0"
-                  >
-                    <span className="absolute top-0 right-0 h-3 w-3 animate-ping rounded-full bg-blue-primary"></span>
-                    <span className="absolute top-0 right-0 h-3 w-3 rounded-full bg-blue-primary"></span>
+                !noticeError && (
+                  <div className="top-notice relative flex items-center">
+                    <div
+                      onClick={openModal}
+                      className="top-notice__icon mt-2 cursor-pointer lg:absolute lg:top-2 lg:mt-0"
+                    >
+                      <span className="absolute top-0 right-0 h-3 w-3 animate-ping rounded-full bg-blue-primary"></span>
+                      <span className="absolute top-0 right-0 h-3 w-3 rounded-full bg-blue-primary"></span>
+                    </div>
+                    <div
+                      onClick={openModal}
+                      className="top-notice__title ml-4 hidden cursor-pointer text-lg lg:block"
+                    >
+                      {latestNotice[0]?.title.slice(0, 34) + `...`}
+                    </div>
                   </div>
-                  <div
-                    onClick={openModal}
-                    className="top-notice__title ml-4 hidden cursor-pointer text-lg lg:block"
-                  >
-                    {latestNotice[0]?.title.slice(0, 34) + `...`}
-                  </div>
-                </div>
+                )
               )}
             </div>
           )}

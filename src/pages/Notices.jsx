@@ -11,6 +11,7 @@ const URL_POST_DELETE_NOTICE = "/notice/find";
 function Notices() {
   const [allNotices, setAllNotices] = useState([]);
   const [noticeLoader, setNoticeLoader] = useState(true);
+  const [noticeError, setNoticeError] = useState(false);
 
   const getAllNotices = async () => {
     setNoticeLoader(true);
@@ -24,6 +25,7 @@ function Notices() {
       setNoticeLoader(false);
     } catch (error) {
       setNoticeLoader(false);
+      setNoticeError(true);
       console.log(error);
     }
   };
@@ -43,6 +45,8 @@ function Notices() {
             w="w-8"
           />
         </div>
+      ) : noticeError ? (
+        <div>Something went wrong. Unable to fetch notices.</div>
       ) : (
         <div className="all-notices w-full space-y-12">
           {allNotices
