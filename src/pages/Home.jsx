@@ -4,13 +4,8 @@ import {
   PresentationChartBarIcon,
   UsersIcon,
 } from "@heroicons/react/24/outline";
-
 import BannerImg from "../_assets/img/boy-in-blue-t-min.jpg";
-
-import Ph1 from "../_assets/img/ph1.jpg";
-import Ph2 from "../_assets/img/ph2.jpg";
-import Ph3 from "../_assets/img/ph3.jpg";
-import Ph4 from "../_assets/img/ph4.jpg";
+import photosHighlight from "../__edits/edits";
 
 const featuresDescribed = [
   {
@@ -54,33 +49,6 @@ const featuresHighlight = [
   },
 ];
 
-const photosHighlight = [
-  {
-    id: 1,
-    title: "Using AI responsibly",
-    desc: "As AI becomes more prevalent in our lives, examining the ethical implications becomes a must. Business School Professor Tsedal Neeley explores privacy, bias, accountability, security, and sustainability.",
-    img: Ph1,
-  },
-  {
-    id: 2,
-    title: "Using AI responsibly",
-    desc: "As AI becomes more prevalent in our lives, examining the ethical implications becomes a must. Business School Professor Tsedal Neeley explores privacy, bias, accountability, security, and sustainability.",
-    img: Ph2,
-  },
-  {
-    id: 3,
-    title: "Using AI responsibly",
-    desc: "As AI becomes more prevalent in our lives, examining the ethical implications becomes a must. Business School Professor Tsedal Neeley explores privacy, bias, accountability, security, and sustainability.",
-    img: Ph3,
-  },
-  {
-    id: 4,
-    title: "Using AI responsibly",
-    desc: "As AI becomes more prevalent in our lives, examining the ethical implications becomes a must. Business School Professor Tsedal Neeley explores privacy, bias, accountability, security, and sustainability.",
-    img: Ph4,
-  },
-];
-
 function Home() {
   return (
     <div className="container mx-auto my-20 max-w-6xl px-6 lg:my-36 lg:px-0">
@@ -97,7 +65,7 @@ function Home() {
         </p>
       </section>
 
-      {/* <section className="featuresDescribed mt-28 lg:mt-36">
+      <section className="gallery mt-28 lg:mt-36">
         <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 sm:gap-x-16 sm:gap-y-14 lg:gap-x-20">
           {photosHighlight.map((item) => {
             return (
@@ -123,7 +91,7 @@ function Home() {
             );
           })}
         </div>
-      </section> */}
+      </section>
 
       <section className="featuresDescribed mt-20 lg:mt-40">
         <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 sm:gap-x-16 sm:gap-y-14 lg:gap-x-20">
